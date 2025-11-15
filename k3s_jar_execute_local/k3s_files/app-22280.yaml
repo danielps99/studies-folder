@@ -1,0 +1,55 @@
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: my-app-22280-service
+spec:
+  ports:
+    - port: 80
+      targetPort: 22280
+      name: http
+---
+apiVersion: discovery.k8s.io/v1
+kind: EndpointSlice
+metadata:
+  name: my-app-22280-service
+  labels:
+    kubernetes.io/service-name: my-app-22280-service
+addressType: IPv4
+endpoints:
+  - addresses:
+      - "10.1.1.21"
+    conditions:
+      ready: true
+ports:
+  - port: 22280
+    name: http
+---
+apiVersion: traefik.io/v1alpha1
+kind: Middleware
+metadata:
+  name: my-app-22280-stripprefix
+spec:
+  stripPrefix:
+    prefixes:
+      - /app-22280
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: my-app-22280-ingress
+  annotations:
+    traefik.ingress.kubernetes.io/router.middlewares: default-my-app-22280-stripprefix@kubernetescrd
+spec:
+  ingressClassName: traefik
+  rules:
+    - host: localhost
+      http:
+        paths:
+          - path: /app-22280
+            pathType: Prefix
+            backend:
+              service:
+                name: my-app-22280-service
+                port:
+                  number: 80
