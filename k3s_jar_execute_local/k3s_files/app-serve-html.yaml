@@ -1,0 +1,105 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: html-server
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: html-server
+  template:
+    metadata:
+      labels:
+        app: html-server
+    spec:
+      containers:
+      - name: nginx
+        image: nginx:alpine
+        ports:
+        - containerPort: 80
+        volumeMounts:
+        - name: html-files
+          mountPath: /usr/share/nginx/html
+        - name: nginx-config
+          mountPath: /etc/nginx/conf.d
+      volumes:
+      - name: html-files
+        configMap:
+          name: html-content
+      - name: nginx-config
+        configMap:
+          name: nginx-html-config
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: html-content
+data:
+  file-to-serve.html: |
+    <!DOCTYPE html>
+    <html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>HTML Server</title>
+        <style>
+            body {
+                text-align: center;
+            }
+        </style>
+    </head>
+    <body>
+        <h1>Hello from k3s!</h1>
+        <p>This HTML file is being served by nginx in Kubernetes.</p>
+        <p>The file is loaded from ConfigMap.</p>
+        <a href='http://localhost/app-22280'>localhost/app-22280 - subir app-22280.yaml e startManyApp.sh</a><br />
+        <a href='http://localhost/app-22281'>localhost/app-22281 - subir app-22281.yaml e startManyApp.sh</a><br />
+        <a href='http://localhost/app-22282'>localhost/app-22282 - subir app-22282.yaml e startManyApp.sh</a><br />
+    </body>
+    </html>
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: nginx-html-config
+data:
+  default.conf: |
+    server {
+        listen 80;
+        root /usr/share/nginx/html;
+        index file-to-serve.html;
+        location / {
+            try_files $uri $uri/ /file-to-serve.html;
+        }
+    }
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: html-service
+spec:
+  selector:
+    app: html-server
+  ports:
+    - port: 80
+      targetPort: 80
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: html-ingress
+spec:
+  ingressClassName: traefik
+  rules:
+    - host: localhost
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: html-service
+                port:
+                  number: 80
+
