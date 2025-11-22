@@ -26,7 +26,13 @@ If your Spring Boot application is currently bound only to localhost, you can ch
 ## Deployment
 
 1. Ensure your applications are running on their respective ports (22280, 22281, 22282, etc.)
-2. Update the IP address in each `app-*.yaml` file if your host IP is different from `10.1.1.21`
+2. Update the IP address in each `app-*.yaml` file if your host IP is different from `10.1.1.21`.
+```bash
+# To find the ip, run the comand bellow and get the value of 'src'
+# The comand shows something like:
+# default via 10.1.1.1 dev wlp1s0 proto dhcp src 10.1.1.21 metric 600
+ip route show default
+```
 3. Apply all configurations:
 
 ```bash
