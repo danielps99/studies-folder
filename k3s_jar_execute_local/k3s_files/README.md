@@ -89,3 +89,24 @@ After deployment, you can access your applications at:
 - `http://localhost/app-22282` (routes to `localhost:22282`)
 
 The Ingress will route traffic to your applications running on the respective ports.
+
+## HTML Server Configuration
+
+The HTML server displays a landing page with links to your applications. It is managed via Kustomize to handle the HTML content updates efficiently.
+
+### Modifying the HTML Page
+
+1. Edit the HTML file located at:
+   `apps/html-server/resources/file-to-serve.html`
+
+2. Apply the changes using Kustomize:
+   ```bash
+   kubectl apply -k .
+   ```
+
+   **Important:** This command now applies **ALL** configurations (HTML server + all apps).
+
+3. Kustomize will automatically:
+   - Generate a new ConfigMap with a unique hash suffix
+   - Update the Deployment to use this new ConfigMap
+   - Trigger a rolling restart of the pods to serve the new content immediately

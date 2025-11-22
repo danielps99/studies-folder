@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HTML Server</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            text-align: center;
+            background-color: #f4f4f9;
+            color: #333;
+            padding: 20px;
+            margin: 0;
+        }
+
+        .card {
+            background: white;
+            max-width: 700px;
+            margin: 40px auto;
+            padding: 2rem;
+            border-radius: 12px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
+        }
+
+        h1 {
+            color: #2c3e50;
+            margin-bottom: 0.5rem;
+        }
+
+        .subtitle {
+            color: #7f8c8d;
+            margin-bottom: 2rem;
+        }
+
+        .instructions {
+            margin: 2rem 0;
+            padding: 1.5rem;
+            background-color: #f8f9fa;
+            border-radius: 8px;
+            text-align: left;
+            border-left: 5px solid #3498db;
+        }
+
+        .instructions h3 {
+            margin-top: 0;
+            color: #2980b9;
+        }
+
+        code {
+            background: #e1e8ed;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-family: 'Consolas', monospace;
+            color: #e74c3c;
+            font-size: 0.9em;
+        }
+
+        .links {
+            text-align: left;
+            margin-top: 2rem;
+        }
+
+        .link-item {
+            margin-bottom: 10px;
+        }
+
+        a {
+            color: #3498db;
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="card">
+        <h1>Hello from k3s!</h1>
+        <p class="subtitle">This HTML file is being served by nginx in Kubernetes.</p>
+        <p>The file is loaded from ConfigMap with <code>kustomization.yaml</code>.</p>
+
+        <div class="instructions">
+            <h3>📝 How to update this page</h3>
+            <ol>
+                <li>Edit the file: <code>apps/html-server/resources/app-serve-html/file-to-serve.html</code></li>
+                <li>From the root folder (<code>k3s_files/</code>), apply changes: <code>kubectl apply -k .</code></li>
+            </ol>
+            <p style="margin-bottom: 0; font-size: 0.9em; color: #666;"><em>This triggers a rolling update of the nginx
+                    pods.</em></p>
+        </div>
+
+        <div class="links">
+            <h3>Available Applications:</h3>
+            <p style="color: #666; font-size: 0.95em; margin-bottom: 1rem; line-height: 1.5;">
+                ⚠️ <strong>Note:</strong> Ensure you have applied the application manifests (e.g.,
+                <code>app-22280.yaml</code>)
+                and started the services using <code>startManyApp.sh</code> before accessing these links.
+            </p>
+            <div class="link-item">
+                <a href='http://localhost/app-22280'>🚀 localhost/app-22280</a>
+            </div>
+            <div class="link-item">
+                <a href='http://localhost/app-22281'>🚀 localhost/app-22281</a>
+            </div>
+            <div class="link-item">
+                <a href='http://localhost/app-22282'>🚀 localhost/app-22282</a>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>

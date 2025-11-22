@@ -30,34 +30,7 @@ spec:
       - name: nginx-config
         configMap:
           name: nginx-html-config
----
-apiVersion: v1
-kind: ConfigMap
-metadata:
-  name: html-content
-data:
-  file-to-serve.html: |
-    <!DOCTYPE html>
-    <html lang="en">
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>HTML Server</title>
-        <style>
-            body {
-                text-align: center;
-            }
-        </style>
-    </head>
-    <body>
-        <h1>Hello from k3s!</h1>
-        <p>This HTML file is being served by nginx in Kubernetes.</p>
-        <p>The file is loaded from ConfigMap.</p>
-        <a href='http://localhost/app-22280'>localhost/app-22280 - subir app-22280.yaml e startManyApp.sh</a><br />
-        <a href='http://localhost/app-22281'>localhost/app-22281 - subir app-22281.yaml e startManyApp.sh</a><br />
-        <a href='http://localhost/app-22282'>localhost/app-22282 - subir app-22282.yaml e startManyApp.sh</a><br />
-    </body>
-    </html>
+
 ---
 apiVersion: v1
 kind: ConfigMap
