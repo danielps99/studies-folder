@@ -1,0 +1,10 @@
+FROM node:20-slim
+
+# Disable npm progress noise
+ENV NPM_CONFIG_LOGLEVEL=error
+
+# Install Gemini CLI
+RUN npm install -g @google/gemini-cli
+
+# Entry point
+ENTRYPOINT ["gemini"]
