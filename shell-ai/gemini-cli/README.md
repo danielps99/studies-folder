@@ -9,7 +9,7 @@ This directory contains a set of scripts to run Google's Gemini models via a Doc
     *   **Function**:
         *   **Validation**: Verifies that `.env` exists and contains a `GEMINI_API_KEY`.
         *   **Build**: Builds the Docker image named `gemini-local-helper`.
-        *   **Setup**: Creates a symbolic link for `runGeminiComandLine.sh` in `~/.local/bin/runGeminiComandLine`, making it globally accessible.
+        *   **Setup**: Creates symbolic links for `runGeminiComandLine.sh` and `gitCommit.sh` in `~/.local/bin`, making them globally accessible.
         *   **Auto-Configuration**: Checks if `~/.local/bin` is in your `$PATH`. If not, it attempts to automatically add it to your `~/.bashrc` or `~/.zshrc`.
 
 *   **`runGeminiComandLine.sh`**:
@@ -19,6 +19,14 @@ This directory contains a set of scripts to run Google's Gemini models via a Doc
         *   Mounts the current working directory to `/workdir` inside the container.
         *   Passes the `GEMINI_API_KEY` from the `.env` file to the container.
         *   Allows you to select which Gemini model to use (e.g., experimental, flash, pro).
+
+*   **`gitCommit.sh`**:
+    *   **Purpose**: A tool to generate conventional commit messages using Gemini.
+    *   **Function**:
+        *   Checks for staged changes in the git repository.
+        *   Sends the diff to Gemini to generate a commit message following Conventional Commits standards.
+        *   Allows model selection.
+        *   Offers to automatically commit with the generated message.
 
 *   **`dockerfile`**:
     *   **Purpose**: Defines the environment for the Gemini CLI.
@@ -58,3 +66,12 @@ runGeminiComandLine
 ```
 
 The script will prompt you to select a model. The current directory will be mounted, so the tool can access files in the folder where you run the command.
+
+### Git Commit Helper
+
+To generate a commit message for your staged changes:
+
+```bash
+gitCommit
+```
+The script will analyze your `git diff --staged`, propose a commit message, and ask for confirmation before committing.
